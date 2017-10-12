@@ -13,7 +13,7 @@ Study Description:<br>
 <input type="text" id="description"><br>
 Classes Available (separate by "|"): <br>
 <input type="text" id="classes"><br>
-Start Date (MM/DD/YYYY): <br>
+Date (MM/DD/YYYY): <br>
 <input type="text" id="startdate"><br>
 End Date (MM/DD/YYYY): <br>
 <input type="text" id="enddate"><br>
@@ -32,33 +32,6 @@ Rooms: <br>
 <input type="checkbox" id="lab7" value="Lab 7"> Lab 7 <br>
 
 <button id="submit" type="button">Submit</button>
-<!--
-<?php
-$listOfInput = $_GET['listOfInput'];
-
-$servername = "localhost";
-$username = "root";
-$dbname = "cs 375";
-
-// Create connection
-$conn = new mysqli($servername, $username, NULL, $dbname);
-# Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} 
-
-$sql = "INSERT INTO study (StudyName, Description, StartDate, EndDate, Password, MultiTestingSupport, ExpectedPointValue, ExpectedTimeInMinutes, Lab2, Lab3, Lab4, Lab5, Lab6, Lab7)
-VALUES ('The Effect of Sleep Deprivation on Reflexes In Young Adults', 'Come in, tell us how much sleep you have had during the last three nights, take a reflex test using flashing lights', 2018-01-01, 2018-12-31, 'LeftRightCenter', 1, 1, 15, 0, 0, 1, 1, 1, 1)";
-
-if ($conn->query($sql) === TRUE) {
-    echo "New record created successfully";
-} else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
-}
-
-$conn->close();
-?>
--->
 
 
 </form>

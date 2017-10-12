@@ -59,13 +59,14 @@ function checkValues() {
 
 	var listOfDates = fixDateForDatabase();
 
+	/*var listOfDates = fixDateForDatabase();
 
 	var listOfInput = [];
 
+	
 	listOfInput.push(studyName);
 	listOfInput.push(password);
 	listOfInput.push(description);
-	listOfInput.push(classes);
 	listOfInput.push(listOfDates[0]);
 	listOfInput.push(listOfDates[1]);
 	listOfInput.push(points);
@@ -78,60 +79,9 @@ function checkValues() {
 	listOfInput.push(lab6);
 	listOfInput.push(lab7);
 
-	console.log(listOfInput);
+	console.log(listOfInput);*/
 
-	window.location.href = "submission.php?listOfInput=" + listOfInput;
-
-
-	/*if ($('#multitest').prop('checked')) {
-		console.log('Multitest: true');
-		multiTest = true;
-	}
-	else {
-		console.log('Multitest: false');
-	}
-	if ($('#lab2').prop('checked')) {
-		console.log('Lab 2: Access granted');
-		lab2 = true;
-	}
-	else {
-		console.log('Lab 2: Access denied');
-	}
-	if ($('#lab3').prop('checked')) {
-		console.log('Lab 3: Access granted');
-		lab3 = true;
-	}
-	else {
-		console.log('Lab 3: Access denied');
-	}
-	if ($('#lab4').prop('checked')) {
-		console.log('Lab 4: Access granted');
-		lab4 = true;
-	}
-	else {
-		console.log('Lab 4: Access denied');
-	}
-	if ($('#lab5').prop('checked')) {
-		console.log('Lab 5: Access granted');
-		lab5 = true;
-	}
-	else {
-		console.log('Lab 5: Access denied');
-	}
-	if ($('#lab6').prop('checked')) {
-		console.log('Lab 6: Access granted');
-		lab6 = true;
-	}
-	else {
-		console.log('Lab 6: Access denied');
-	}
-	if ($('#lab7').prop('checked')) {
-		console.log('Lab 7: Access granted');
-		lab7 = true;
-	}
-	else {
-		console.log('Lab 7: Access denied');
-	} */
+	window.location.href = "submission.php?StudyName=" + studyName + "&Password=" + password + "&Description=" + description + "&ClassesAvailable=" + classes + "&StartDate=" + listOfDates[0] + "&EndDate=" + listOfDates[1] + "&ExpectedPointValue=" + points + "&ExpectedTimeInMinutes=" + time + "&MultiTestingSupport=" + multiTest + "&Lab2=" + lab2 + "&Lab3=" + lab3 + "&Lab4=" + lab4 + "&Lab5=" + lab5 + "&Lab6=" + lab6 + "&Lab7=" + lab7; //https://stackoverflow.com/questions/8191124/send-javascript-variable-to-php-variable
 }
 
 function fixDateForDatabase() {
@@ -159,33 +109,7 @@ function fixDateForDatabase() {
 	console.log(startDateFixed + ", " + endDateFixed);
 
 	return [startDateFixed, endDateFixed];
-
-
-	/*var startDate = $("#startdate").val();
-	var startDateMonth = startDate.substring(0,2);
-	var startDateDay = startDate.substring(3,5);
-	var startDateYear = startDate.substring(6,10);
-	var startDateFixed = startDateYear + "-" + startDateMonth + "-" + startDateDay;
-
-	console.log(startDateFixed);*/
 }
 
 var submitButton = $('#submit');
 submitButton.on("click", checkValues);
-
-/*function fixDateForDatabase() {
-	//var startDate = $("#startdate").val();
-	//var startDateMonth = startDate.substring(0,2);
-	//var startDateDay = startDate.substring(3,5);
-	//var startDateYear = startDate.substring(6,10);
-	//var startDateFixed = startDateYear + "-" + startDateMonth + "-" + startDateDay;
-
-	//console.log(startDateFixed);
-	//console.log(startDateMonth);
-	console.log($("#startdate").val());
-}
-
-console.log("hello");
-
-var submitButton = $('#submit');
-submitButton.on("click", fixDateForDatabase);*/
