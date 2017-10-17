@@ -26,11 +26,11 @@
 
 		function getValues ($columnNames) {
 			foreach ($columnNames as $value) {
-				array_push($columnValues,$_GET['$value']);
+				array_push($columnValues,$_GET[$value]);
 			}
 		}
 
-		function createStatement ($tableName, $columnNames, $columnValues) {
+		function createStatement () {
 			$sql = "INSERT INTO `$tableName` (";
 			foreach ($columnNames as $name) {
 				$sql = $sql . $name . ',';
