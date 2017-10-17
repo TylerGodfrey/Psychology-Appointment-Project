@@ -81,7 +81,7 @@ function checkValues() {
 
 	console.log(listOfInput);*/
 
-	window.location.href = "submission.php?StudyName=" + studyName + "&Password=" + password + "&Description=" + description + "&ClassesAvailable=" + classes + "&StartDate=" + listOfDates[0] + "&EndDate=" + listOfDates[1] + "&ExpectedPointValue=" + points + "&ExpectedTimeInMinutes=" + time + "&MultiTestingSupport=" + multiTest + "&Lab2=" + lab2 + "&Lab3=" + lab3 + "&Lab4=" + lab4 + "&Lab5=" + lab5 + "&Lab6=" + lab6 + "&Lab7=" + lab7; //https://stackoverflow.com/questions/8191124/send-javascript-variable-to-php-variable
+	window.location.href = "submission.php?StudyName=" + studyName + "&Password=" + password + "&Description=" + description + "&ClassCode=" + classes + "&StartDate=" + listOfDates[0] + "&EndDate=" + listOfDates[1] + "&ExpectedPointValue=" + points + "&ExpectedTimeInMinutes=" + time + "&MultiTestingSupport=" + multiTest + "&Lab2=" + lab2 + "&Lab3=" + lab3 + "&Lab4=" + lab4 + "&Lab5=" + lab5 + "&Lab6=" + lab6 + "&Lab7=" + lab7; //https://stackoverflow.com/questions/8191124/send-javascript-variable-to-php-variable
 }
 
 function fixDateForDatabase() {
