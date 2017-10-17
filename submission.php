@@ -6,9 +6,9 @@
  <?php
 
 
-include ("general_submission.php");
+include ("general_connection.php");
 
-$studySub = new Submission();
+$studySub = new Connection();
 $studySub->tableName = "study";
 $studySub->columnNames = ['StudyName','Password','Description','StartDate','EndDate','ExpectedPointValue','ExpectedTimeInMinutes','MultiTestingSupport','Lab2','Lab3','Lab4','Lab5','Lab6','Lab7'];
 $studySub->getValues();

@@ -4,7 +4,7 @@
  </head>
  <body>
  <?php
- class Submission {
+ class Connection {
 	public $tableName;
 	public $columnNames=array();
 	public $columnValues=array();
