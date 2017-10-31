@@ -65,8 +65,9 @@
 
 	function createConnection () {
 		$servername = "localhost";
-		$username = "root";
+		$username = "anyone";
 		$dbname = "cs 375";
+		$password = "PsychAppointments";
 
 		// Create connection
 		$this->conn = new mysqli($servername, $username, NULL, $dbname);
