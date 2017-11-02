@@ -38,7 +38,7 @@
 		$this->columnValues = $colVals;
 	}
 
-	function createStatement () {
+	function createInsertStatement () {
 		$this->sql = "INSERT INTO `$this->tableName` (";
 		$colNames = $this->columnNames;
 		foreach ($colNames as $name) {
@@ -61,6 +61,19 @@
 		}
 
 		$this->sql = substr($this->sql, 0, -1) . ");";
+	}
+
+	function createSelectStatement () {
+		if (empty($this->columnNames)) {
+			$this->sql = "SELECT * FROM `$this->tableName`";
+		} 
+		else {
+			$this->sql = "SELECT " . 
+			foreach($this->columnNames as $name) {
+				$this->sql = $this->sql . $name . ',';
+			}
+			$this->sql = substr($this->sql, 0, -1) . " FROM `$this->tableName`";
+		}
 	}
 
 	function createConnection () {
