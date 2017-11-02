@@ -45,7 +45,7 @@ if ($next_month == 13 ) {
 </tr>
 <tr>
 <td align="center">
-<table width="100%" border="0" cellpadding="2" cellspacing="2">
+<table width="100%" border="2" cellpadding="2" cellspacing="2">
 <tr align="center">
 <td colspan="7" bgcolor="#999999" style="color:#FFFFFF"><strong><?php echo $monthNames[$cMonth-1].' '.$cYear; ?></strong></td>
 </tr>
@@ -65,10 +65,10 @@ $maxday = date("t",$timestamp);
 $thismonth = getdate ($timestamp);
 $startday = $thismonth['wday'];
 for ($i=0; $i<($maxday+$startday); $i++) {
-    if(($i % 7) == 0 ) echo "<tr>n";
-    if($i < $startday) echo "<td></td>n";
-    else echo "<td align='left' valign='top' height='110px'>". ($i - $startday + 1) . "</td>n";
-    if(($i % 7) == 6 ) echo "</tr>n";
+    if(($i % 7) == 0 ) echo "<tr>";
+    if($i < $startday) echo "<td></td>";
+    else echo "<td align='left' valign='top' height='110px'>". ($i - $startday + 1) . "</td>";
+    if(($i % 7) == 6 ) echo "</tr>";
 }
 ?>
 
