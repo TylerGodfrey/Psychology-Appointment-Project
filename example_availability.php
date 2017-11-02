@@ -1,25 +1,30 @@
 <html>
-<HEAD>
+<head>
 
-<SCRIPT LANGUAGE="JavaScript">
+<script language="javascript">
 var dDate = new Date();
 var dCurMonth = dDate.getMonth();
 var dCurDayOfMonth = dDate.getDate();
 var dCurYear = dDate.getFullYear();
 var objPrevElement = new Object();
 
-function fToggleColor(myElement) {
-var toggleColor = "#ff0000";
-if (myElement.id == "calDateText") {
-if (myElement.color == toggleColor) {
-myElement.color = "";
-} 
-else {
-myElement.color = toggleColor;
-   }
-} 
-else if (myElement.id == "calCell") {
-for (var i in myElement.children) {
+function fToggleColor(myElement) 
+{
+	var toggleColor = "#ff0000";
+
+	if (myElement.id == "calDateText") 
+	{
+		if (myElement.color == toggleColor) 
+			myElement.color = ""; 
+
+		else 
+			myElement.color = toggleColor;	
+	}
+
+	else if (myElement.id == "calCell") 
+	{
+		for (var i in myElement.children) 
+		{
 if (myElement.children[i].id == "calDateText") {
 if (myElement.children[i].color == toggleColor) {
 myElement.children[i].color = "";
@@ -98,54 +103,90 @@ iVarDate++;
 }
 return aMonth;
 }
-function fDrawCal(iYear, iMonth, iCellWidth, iCellHeight, sDateTextSize, sDateTextWeight, iDayStyle) {
-var myMonth;
-myMonth = fBuildCal(iYear, iMonth, iDayStyle);
-document.write("<table border='1'>")
-document.write("<tr>");
-document.write("<td align='center' style='FONT-FAMILY:Arial;FONT-SIZE:12px;FONT-WEIGHT: bold'>" + myMonth[0][0] + "</td>");
-document.write("<td align='center' style='FONT-FAMILY:Arial;FONT-SIZE:12px;FONT-WEIGHT: bold'>" + myMonth[0][1] + "</td>");
-document.write("<td align='center' style='FONT-FAMILY:Arial;FONT-SIZE:12px;FONT-WEIGHT: bold'>" + myMonth[0][2] + "</td>");
-document.write("<td align='center' style='FONT-FAMILY:Arial;FONT-SIZE:12px;FONT-WEIGHT: bold'>" + myMonth[0][3] + "</td>");
-document.write("<td align='center' style='FONT-FAMILY:Arial;FONT-SIZE:12px;FONT-WEIGHT: bold'>" + myMonth[0][4] + "</td>");
-document.write("<td align='center' style='FONT-FAMILY:Arial;FONT-SIZE:12px;FONT-WEIGHT: bold'>" + myMonth[0][5] + "</td>");
-document.write("<td align='center' style='FONT-FAMILY:Arial;FONT-SIZE:12px;FONT-WEIGHT: bold'>" + myMonth[0][6] + "</td>");
-document.write("</tr>");
-for (w = 1; w < 7; w++) {
-document.write("<tr>")
-for (d = 0; d < 7; d++) {
-document.write("<td align='left' valign='top' width='" + iCellWidth + "' height='" + iCellHeight + "' id=calCell style='CURSOR:Hand' onMouseOver='fToggleColor(this)' onMouseOut='fToggleColor(this)' onclick=fSetSelectedDay(this)>");
-if (!isNaN(myMonth[w][d])) {
-document.write("<font id=calDateText onMouseOver='fToggleColor(this)' style='CURSOR:Hand;FONT-FAMILY:Arial;FONT-SIZE:" + sDateTextSize + ";FONT-WEIGHT:" + sDateTextWeight + "' onMouseOut='fToggleColor(this)' onclick=fSetSelectedDay(this)>" + myMonth[w][d] + "</font>");
-document.write("<br>Start:<input id=start></input>");
-document.write("<br>End:<input id=end></input>");
-} 
-else {
-document.write("<font id=calDateText onMouseOver='fToggleColor(this)' style='CURSOR:Hand;FONT-FAMILY:Arial;FONT-SIZE:" + sDateTextSize + ";FONT-WEIGHT:" + sDateTextWeight + "' onMouseOut='fToggleColor(this)' onclick=fSetSelectedDay(this)> </font>");
+
+function fDrawCal(iYear, iMonth, iCellWidth, iCellHeight, sDateTextSize, sDateTextWeight, iDayStyle) 
+{
+	var myMonth;
+	myMonth = fBuildCal(iYear, iMonth, iDayStyle);
+	document.write("<table border='1'>")
+	document.write("<tr>");
+	document.write("<td align='center' style='FONT-FAMILY:Arial;FONT-SIZE:12px;FONT-WEIGHT: bold'>" + myMonth[0][0] + "</td>");
+	document.write("<td align='center' style='FONT-FAMILY:Arial;FONT-SIZE:12px;FONT-WEIGHT: bold'>" + myMonth[0][1] + "</td>");
+	document.write("<td align='center' style='FONT-FAMILY:Arial;FONT-SIZE:12px;FONT-WEIGHT: bold'>" + myMonth[0][2] + "</td>");
+	document.write("<td align='center' style='FONT-FAMILY:Arial;FONT-SIZE:12px;FONT-WEIGHT: bold'>" + myMonth[0][3] + "</td>");
+	document.write("<td align='center' style='FONT-FAMILY:Arial;FONT-SIZE:12px;FONT-WEIGHT: bold'>" + myMonth[0][4] + "</td>");
+	document.write("<td align='center' style='FONT-FAMILY:Arial;FONT-SIZE:12px;FONT-WEIGHT: bold'>" + myMonth[0][5] + "</td>");
+	document.write("<td align='center' style='FONT-FAMILY:Arial;FONT-SIZE:12px;FONT-WEIGHT: bold'>" + myMonth[0][6] + "</td>");
+	document.write("</tr>");
+
+	for (w = 1; w < 7; w++) 
+	{
+		document.write("<tr>")
+
+		for (d = 0; d < 7; d++) 
+		{
+			document.write("<td align='left' valign='top' width='" + iCellWidth + "' height='" + iCellHeight + "' id=calCell style='CURSOR:Hand' onMouseOver='fToggleColor(this)' onMouseOut='fToggleColor(this)' onclick=fSetSelectedDay(this)>");
+
+			if (!isNaN(myMonth[w][d])) 
+			{
+				document.write("<font id=calDateText onMouseOver='fToggleColor(this)' style='CURSOR:Hand;FONT-FAMILY:Arial;FONT-SIZE:" + sDateTextSize + ";FONT-WEIGHT:" + sDateTextWeight + "' onMouseOut='fToggleColor(this)' onclick=fSetSelectedDay(this)>" + myMonth[w][d] + "</font>");
+
+				document.write("<br>Start:<select id='startTime'>" +
+								"<option value='blank'></option>" +
+								"<option value='five'><time>5:00</time></option>" +
+								"<option value='five-thirty'><time>5:30</time></option>" +
+								"<option value='six'><time>6:00</time></option>" +
+								"<option value='six-thirty'><time>6:30</time></option>" +
+								"<option value='seven'><time>7:00</time></option>" +
+							   "</select>");
+				document.write("<br>End: <select id='endTime'>" +
+								"<option value='blank'></option>" +
+								"<option value='five-thirty'><time>5:30</time></option>" +
+								"<option value='six'><time>6:00</time></option>" +
+								"<option value='six-thirty'><time>6:30</time></option>" +
+								"<option value='seven'><time>7:00</time></option>" +
+								"<option value='seven-thirty'><time>7:30</time></option>" +
+							   "</select>");
+			} 
+
+			else 
+			{
+				document.write("<font id=calDateText onMouseOver='fToggleColor(this)' style='CURSOR:Hand;FONT-FAMILY:Arial;FONT-SIZE:" + sDateTextSize + ";FONT-WEIGHT:" + sDateTextWeight + "' onMouseOut='fToggleColor(this)' onclick=fSetSelectedDay(this)> </font>");
+			}
+
+			document.write("</td>")
+		}
+
+		document.write("</tr>");
+	}
+
+	document.write("</table>")
 }
-document.write("</td>")
-}
-document.write("</tr>");
-}
-document.write("</table>")
-}
-function fUpdateCal(iYear, iMonth) {
-myMonth = fBuildCal(iYear, iMonth);
-objPrevElement.bgColor = "";
-document.all.calSelectedDate.value = "";
-for (w = 1; w < 7; w++) {
-for (d = 0; d < 7; d++) {
-if (!isNaN(myMonth[w][d])) {
-calDateText[((7*w)+d)-7].innerText = myMonth[w][d];
-} else {
-calDateText[((7*w)+d)-7].innerText = " ";
-         }
-      }
-   }
+
+function fUpdateCal(iYear, iMonth) 
+{
+	myMonth = fBuildCal(iYear, iMonth);
+	objPrevElement.bgColor = "";
+	document.all.calSelectedDate.value = "";
+
+	for (w = 1; w < 7; w++) 
+	{
+		for (d = 0; d < 7; d++) 
+		{
+			if (!isNaN(myMonth[w][d])) 
+				calDateText[((7*w)+d)-7].innerText = myMonth[w][d]; 
+
+			else 
+				calDateText[((7*w)+d)-7].innerText = " ";
+     	}
+    }
 }
 </script>
-</HEAD>
-<BODY>
+</head>
+
+<body>
+<form name="frmCalendarSample" method="post" action="">
+<input type="hidden" name="calSelectedDate" value="">
 
 <script language="JavaScript" for=window event=onload>
 var dCurDate = new Date();
@@ -155,14 +196,11 @@ if (frmCalendarSample.tbSelYear.options[i].value == dCurDate.getFullYear())
 frmCalendarSample.tbSelYear.options[i].selected = true;
 </script>
 
-<form name="frmCalendarSample" method="post" action="">
-<input type="hidden" name="calSelectedDate" value="">
-
 <table border="2">
 <tr>
 <td>
-<select name="tbSelMonth" onchange='fUpdateCal(frmCalendarSample.tbSelYear.value, frmCalendarSample.tbSelMonth.value)'>
-<option value="1">January</option>
+<label for="month" onchange='fUpdateCal(frmCalendarSample.tbSelYear.value, frmCalendarSample.tbSelMonth.value)'>November</label>
+<!-- <option value="1">January</option>
 <option value="2">February</option>
 <option value="3">March</option>
 <option value="4">April</option>
@@ -173,24 +211,25 @@ frmCalendarSample.tbSelYear.options[i].selected = true;
 <option value="9">September</option>
 <option value="10">October</option>
 <option value="11">November</option>
-<option value="12">December</option>
+<option value="12">December</option> -->
 </select>
   
-<select name="tbSelYear" onchange='fUpdateCal(frmCalendarSample.tbSelYear.value, frmCalendarSample.tbSelMonth.value)'>
-<option value="1998">1998</option>
+<label for="year" onchange='fUpdateCal(frmCalendarSample.tbSelYear.value, frmCalendarSample.tbSelMonth.value)'>2017</label>
+<!-- <option value="1998">1998</option>
 <option value="1999">1999</option>
 <option value="2000">2000</option>
 <option value="2001">2001</option>
 <option value="2002">2002</option>
 <option value="2003">2003</option>
 <option value="2004">2004</option>
-<option value="2017">2017</option>
+<option value="2017">2017</option> -->
 </select>
+<button id="submit" type="button">Submit</button>
 </td>
 </tr>
 <tr>
 <td>
-<script language="JavaScript">
+<script language="javascript">
 var dCurDate = new Date();
 fDrawCal(dCurDate.getFullYear(), dCurDate.getMonth()+1, 200, 110, "16px", "bold", 1);
 </script>
@@ -198,4 +237,7 @@ fDrawCal(dCurDate.getFullYear(), dCurDate.getMonth()+1, 200, 110, "16px", "bold"
 </tr>
 </table>
 </form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/availability.js"></script>
+</body>
 </html>
