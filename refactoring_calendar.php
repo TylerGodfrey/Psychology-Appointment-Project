@@ -2,13 +2,17 @@
 <head>
 </head>
 <body>
-<?php
-$monthNames = Array("January", "February", "March", "April", "May", "June", "July", 
-"August", "September", "October", "November", "December");
 
+<?php
+$monthNames = Array("January", "February", "March", "April", "May", "June",   "July", "August", "September", "October", "November", "December");
+?>
+
+<?php
 if (!isset($_REQUEST["month"])) $_REQUEST["month"] = date("n");
 if (!isset($_REQUEST["year"])) $_REQUEST["year"] = date("Y");
+?>
 
+<?php
 $cMonth = $_REQUEST["month"];
 $cYear = $_REQUEST["year"];
  
@@ -40,29 +44,49 @@ if ($next_month == 13 ) {
 </tr>
 <tr>
 <td align="center">
-<table width="100%" border="0" cellpadding="2" cellspacing="2">
+<table width="100%" border="2" cellpadding="2" cellspacing="2">
 <tr align="center">
 <td colspan="7" bgcolor="#999999" style="color:#FFFFFF"><strong><?php echo $monthNames[$cMonth-1].' '.$cYear; ?></strong></td>
 </tr>
 <tr>
-<td align="center" bgcolor="#999999" style="color:#FFFFFF"><strong>Sunday</strong></td>
-<td align="center" bgcolor="#999999" style="color:#FFFFFF"><strong>Monday</strong></td>
-<td align="center" bgcolor="#999999" style="color:#FFFFFF"><strong>Tuesday</strong></td>
-<td align="center" bgcolor="#999999" style="color:#FFFFFF"><strong>Wednesday</strong></td>
-<td align="center" bgcolor="#999999" style="color:#FFFFFF"><strong>Thursday</strong></td>
-<td align="center" bgcolor="#999999" style="color:#FFFFFF"><strong>Friday</strong></td>
-<td align="center" bgcolor="#999999" style="color:#FFFFFF"><strong>Saturday</strong></td>
+<td align="center" bgcolor="#999999" style="color:#FFFFFF"><strong>Sun</strong></td>
+<td align="center" bgcolor="#999999" style="color:#FFFFFF"><strong>Mon</strong></td>
+<td align="center" bgcolor="#999999" style="color:#FFFFFF"><strong>Tue</strong></td>
+<td align="center" bgcolor="#999999" style="color:#FFFFFF"><strong>Wed</strong></td>
+<td align="center" bgcolor="#999999" style="color:#FFFFFF"><strong>Thu</strong></td>
+<td align="center" bgcolor="#999999" style="color:#FFFFFF"><strong>Fri</strong></td>
+<td align="center" bgcolor="#999999" style="color:#FFFFFF"><strong>Sat</strong></td>
 </tr>
 
-<?php
+<?php 
 $timestamp = mktime(0,0,0,$cMonth,1,$cYear);
 $maxday = date("t",$timestamp);
 $thismonth = getdate ($timestamp);
 $startday = $thismonth['wday'];
-for ($i=0; $i<($maxday+$startday); $i++) {
+for ($i = 0; $i < ($maxday + $startday); $i++) 
+{
     if(($i % 7) == 0 ) echo "<tr>";
+
     if($i < $startday) echo "<td></td>";
-    else echo "<td align='left' valign='top' width='110px' height='110px'>". ($i - $startday + 1) . "</td>";
+    else 
+    {
+    	echo "<td align='left' valign='top' height='110px'>". ($i - $startday + 1);
+    	echo "<br>Start:<select id='startTime" .
+    		           "<option value='blank'></option>" .
+    		           "<option value='five'><time>5:00</time></option>" .
+    		           "<option value='five-thirty'><time>5:30</time></option>" .
+    		           "<option value='six'><time>6:00</time></option>" .
+    		           "<option value='six-thirty'><time>6:30</time></option>" .
+    		           "<option value='seven'><time>7:00</time></option></select>" .
+    		 "<br>End: <select id='endTime'" .
+    				  "<option value='blank'></option>" .
+    				  "<option value='five-thirty'><time>5:30</time></option>" .
+    				  "<option value='six'><time>6:00</time></option>" .
+    				  "<option value='six-thrity'><time>6:30</time></option>" .
+    				  "<option value='seven'><time>7:00</time></option>" .
+    				  "<option value='seven-thirty'><time>7:30</time></option></select></td>";
+    }
+
     if(($i % 7) == 6 ) echo "</tr>";
 }
 ?>
@@ -71,6 +95,9 @@ for ($i=0; $i<($maxday+$startday); $i++) {
 </td>
 </tr>
 </table>
+<button id="submit" type="button">Submit</button>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/availability.js"></script>
 </body>
 </html>
