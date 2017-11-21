@@ -1,6 +1,5 @@
 <html>
 <head>
-Example
 </head>
 <body>
 <center>Study Creation</center>
