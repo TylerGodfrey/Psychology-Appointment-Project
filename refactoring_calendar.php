@@ -70,21 +70,27 @@ for ($i = 0; $i < ($maxday + $startday); $i++)
     if($i < $startday) echo "<td></td>";
     else 
     {
-    	echo "<td align='left' valign='top' height='110px'>". ($i - $startday + 1);
-    	echo "<br>Start:<select id='startTime" .
-    		           "<option value='blank'></option>" .
-    		           "<option value='five'><time>5:00</time></option>" .
-    		           "<option value='five-thirty'><time>5:30</time></option>" .
-    		           "<option value='six'><time>6:00</time></option>" .
-    		           "<option value='six-thirty'><time>6:30</time></option>" .
-    		           "<option value='seven'><time>7:00</time></option></select>" .
+        $day = $i - $startday + 1;//Made into variable for JavaScript reference
+
+    	echo "<td align='left' valign='top' height='110px'>". $day;
+
+    	echo "<br>Start:<select id='startTime'" .
+    		 "<option selected disabled hidden style='display: none' value='blank'><time></time></option>" .
+	         "<option value='five'><time>5:00</time></option>" .
+	         "<option value='five-thirty'><time>5:30</time></option>" .
+	         "<option value='six'><time>6:00</time></option>" .
+	         "<option value='six-thirty'><time>6:30</time></option>" .
+    		 "<option value='seven'><time>7:00</time></option></select>" .
+
     		 "<br>End: <select id='endTime'" .
-    				  "<option value='blank'></option>" .
-    				  "<option value='five-thirty'><time>5:30</time></option>" .
-    				  "<option value='six'><time>6:00</time></option>" .
-    				  "<option value='six-thrity'><time>6:30</time></option>" .
-    				  "<option value='seven'><time>7:00</time></option>" .
-    				  "<option value='seven-thirty'><time>7:30</time></option></select></td>";
+    		 "<option selected disabled hidden style='display: none' value='blank'><time></time></option>" .
+    		 "<option value='five-thirty'><time>5:30</time></option>" .
+    		 "<option value='six'><time>6:00</time></option>" .
+    		 "<option value='six-thrity'><time>6:30</time></option>" .
+    		 "<option value='seven'><time>7:00</time></option>" .
+    		 "<option value='seven-thirty'><time>7:30</time></option></select>";
+
+        echo "<br><button id='submit' type='button'>Submit</button></td>";
     }
 
     if(($i % 7) == 6 ) echo "</tr>";
@@ -95,7 +101,6 @@ for ($i = 0; $i < ($maxday + $startday); $i++)
 </td>
 </tr>
 </table>
-<button id="submit" type="button">Submit</button>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/availability.js"></script>
