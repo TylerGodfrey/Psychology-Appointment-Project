@@ -10,6 +10,7 @@
 	public $columnValues=array();
 	public $sql;
 	public $conn;
+	public $inserted_id;
 
 	function setTableName($name) {
 		$tableName = $name;
@@ -54,7 +55,7 @@
 			elseif ($this->isDate($value) == true) {
 				$value = DateTime::createFromFormat('D M d Y', $value);
 				$value = $value->format('Y-m-d');
-				$this->sql = $this->sql . $value;
+				$this->sql = $this->sql . '\'' . $value . '\'';
 			}
 			elseif (is_string($value) == true) $this->sql = $this->sql . '\''. $value . '\'';
 			$this->sql = $this->sql . ",";
@@ -68,7 +69,7 @@
 			$this->sql = "SELECT * FROM `$this->tableName`";
 		} 
 		else {
-			$this->sql = "SELECT " . 
+			$this->sql = "SELECT "; 
 			foreach($this->columnNames as $name) {
 				$this->sql = $this->sql . $name . ',';
 			}
@@ -83,19 +84,20 @@
 		$password = "PsychAppointments";
 
 		// Create connection
-		$this->conn = new mysqli($servername, $username, NULL, $dbname);
+		$this->conn = new mysqli($servername, $username, $password, $dbname);
 		# Check connection
 		if ($this->conn->connect_error) {
 		    die("Connection failed: " . $this->conn->connect_error);
 		}
 	}
 
-	function killConnection () {
+	function closeConnection () {
 		$this->conn->close();
 		echo "Connection closed successfully.";
 	}
 
 	function submit () {
+		echo $this->sql . "<br>";
 		if ($this->conn->query($this->sql) === TRUE) {
 		    echo "New record created successfully";
 		}
@@ -104,15 +106,19 @@
 		}
 	}
 
-	function getBridge () {
+	function getInsertedId () {
 		$this->inserted_id = $this->conn->insert_id;
+	}
+
+	function getBridge () {
+		//$this->inserted_id = $this->conn->insert_id;
 		$this->bridge_values = $_GET[$this->bridgeName];
 		$this->bridge_values = preg_split('/\|/', $this->bridge_values, -1, PREG_SPLIT_NO_EMPTY);
 	}
 
 	function submitBridge () {
 		foreach ($this->bridge_values as $value) {
-			$this->sql = "INSERT INTO `$this->tableName` ($this->idName, $this->bridgeName) VALUES ($this->inserted_id,'" . $value . "');";
+			$this->sql = "INSERT INTO `$this->tableName` ($this->idName, $this->bridgeName) VALUES ($this->inserted_id," . $value . ");";
 			$this->submit();
 		}
 	}

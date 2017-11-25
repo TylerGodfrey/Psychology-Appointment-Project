@@ -9,9 +9,27 @@ Study Name:<br>
 Password:<br>
 <input type="text" id="password"><br>
 Study Description:<br>
-<input type="text" id="description"><br>
-Classes Available (separate by "|"): <br>
-<input type="text" id="classes"><br>
+<input type="text" id="description"><br><br>
+
+<?php 
+include ("general_connection.php");
+$classesQuery = new Connection();
+$classesQuery->createConnection();
+$classesQuery->sql = "SELECT * FROM `classes`";
+$classesResult = mysqli_query($classesQuery->conn, $classesQuery->sql);
+$classesDropdown = "";
+if (mysqli_num_rows($classesResult) > 0) {
+	$classesDropdown = $classesDropdown . "<select multiple id='classes'>";
+	while ($row = mysqli_fetch_assoc($classesResult)) {
+		$classesDropdown = $classesDropdown . "<option value='" . $row['ClassID'] . "'>" . $row['ClassName'] . "</option>";
+	}
+	$classesDropdown = $classesDropdown . "</select>";
+}
+else {
+	$classesDropdown = "None Available.";
+}
+echo "Classes Available: <br>" . $classesDropdown . "<br><br>";
+?>
 Date (MM/DD/YYYY): <br>
 <input type="text" id="startdate"><br>
 End Date (MM/DD/YYYY): <br>

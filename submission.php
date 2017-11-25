@@ -10,17 +10,23 @@ include ("general_connection.php");
 
 $studySub = new Connection();
 $studySub->tableName = "study";
-$studySub->columnNames = ['StudyName','Password','Description','StartDate','EndDate','ExpectedPointValue','ExpectedTimeInMinutes','MultiTestingSupport','Lab2','Lab3','Lab4','Lab5','Lab6','Lab7'];
+$studySub->columnNames = ['StudyName','Password','Description','StartDate','EndDate','ExpectedPointValue','ExpectedTimeInMinutes','MultiTestingSupport'];
 $studySub->getValues();
-$studySub->createStatement();
+$studySub->createInsertStatement();
 $studySub->createConnection();
 $studySub->submit();
+$studySub->getInsertedId();
 $studySub->tableName = "class study pairings";
-$studySub->bridgeName = "ClassCode";
+$studySub->bridgeName = "ClassID";
 $studySub->idName = "StudyId";
 $studySub->getBridge();
 $studySub->submitBridge();
-$studySub->killConnection();
+$studySub->tableName = "study lab pairings";
+$studySub->bridgeName = "RoomID";
+$studySub->idName = "StudyId";
+$studySub->getBridge();
+$studySub->submitBridge();
+$studySub->closeConnection();
 
 
 /*	function isDate($value) {// https://stackoverflow.com/questions/11029769/function-to-check-if-a-string-is-a-date

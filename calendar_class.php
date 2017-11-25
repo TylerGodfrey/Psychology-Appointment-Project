@@ -4,7 +4,7 @@
 <body>
 
 <?php
-class Calendar {
+class Calendar { // code pulled from: https://www.phpjabbers.com/how-to-make-a-php-calendar-php26.html    minor changes made, but largely based on this
 private $monthNames = Array("January", "February", "March", "April", "May", "June", "July", 
 "August", "September", "October", "November", "December");
 
@@ -60,8 +60,9 @@ function createTopOfCalendar () {
 	";
 }
 
-function createBottomOfCalendar () {
+function createBottomOfCalendar ($studyID) {
 
+	$studyID = $studyID;
 	$timestamp = mktime(0,0,0,$this->cMonth,1,$this->cYear);
 	$maxday = date("t",$timestamp);
 	$thismonth = getdate ($timestamp);

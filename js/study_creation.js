@@ -6,6 +6,8 @@ function checkValues() {
 	var points = parseInt($('#points').val());
 	var time = parseInt($('#time').val());
 
+	console.log(classes);
+
 	var multiTest;
 	var lab2;
 	var lab3;
@@ -14,6 +16,12 @@ function checkValues() {
 	var lab6;
 	var lab7;
 	var roomIDs = "";
+
+	var classList = "";
+	for (var i = 0; i < classes.length; i++) {
+		classList = classList + classes[i] + '|';
+	}
+	classList = classList.slice(0, -1);
 
 	if ($('#multitest').prop('checked')) {
 		multiTest = 1;
@@ -88,8 +96,14 @@ function checkValues() {
 
 	console.log(listOfInput);*/
 
-	window.location.href = "submission.php?StudyName=" + studyName + "&Password=" + password + "&Description=" + description + "&ClassCode=" + classes + "&StartDate=" + listOfDates[0] + "&EndDate=" + listOfDates[1] + "&ExpectedPointValue=" + points + "&ExpectedTimeInMinutes=" + time + "&MultiTestingSupport=" + multiTest + "&RoomID=" + roomIDs; //https://stackoverflow.com/questions/8191124/send-javascript-variable-to-php-variable
+	window.location.href = "submission.php?StudyName=" + studyName + "&Password=" + password + "&Description=" + description + "&StartDate=" + listOfDates[0] + "&EndDate=" + listOfDates[1] + "&ExpectedPointValue=" + points + "&ExpectedTimeInMinutes=" + time + "&MultiTestingSupport=" + multiTest + "&ClassID=" + classList + "&RoomID=" + roomIDs; //https://stackoverflow.com/questions/8191124/send-javascript-variable-to-php-variable
 }
+
+$('option').mousedown(function(e) {
+    e.preventDefault();
+    $(this).prop('selected', !$(this).prop('selected'));
+    return false;
+});
 
 function fixDateForDatabase() {
 
@@ -113,7 +127,7 @@ function fixDateForDatabase() {
 	startDateFixed = startDateFixed.toDateString("yyyy-MM-dd");
 	endDateFixed = endDateFixed.toDateString("yyyy-MM-dd");
 
-	console.log(startDateFixed + ", " + endDateFixed);
+	// console.log(startDateFixed + ", " + endDateFixed);
 
 	return [startDateFixed, endDateFixed];
 }
