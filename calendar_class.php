@@ -8,7 +8,7 @@ class Calendar { // code pulled from: https://www.phpjabbers.com/how-to-make-a-p
 private $monthNames = Array("January", "February", "March", "April", "May", "June", "July", 
 "August", "September", "October", "November", "December");
 
-function createTopOfCalendar () {
+function createTopOfCalendar ($studyID) {
 	if (!isset($_REQUEST["month"])) $_REQUEST["month"] = date("n");
 	if (!isset($_REQUEST["year"])) $_REQUEST["year"] = date("Y");
 
@@ -36,8 +36,8 @@ function createTopOfCalendar () {
 	<td bgcolor='#999999' style='color:#FFFFFF'>
 	<table width='100%' border='0' cellspacing='0' cellpadding='0'>
 	<tr>
-	<td width='50%' align='left'>  <a href='" . $_SERVER['PHP_SELF'] . '?month='. $prev_month . '&year=' . $prev_year . "' style='color:#FFFFFF'>Previous</a></td>
-	<td width='50%' align='right'><a href='" . $_SERVER['PHP_SELF'] . '?month='. $next_month . '&year=' . $next_year . "' style='color:#FFFFFF'>Next</a>  </td>
+	<td width='50%' align='left'>  <a href='" . $_SERVER['PHP_SELF'] . '?month='. $prev_month . '&year=' . $prev_year . "'&studyID='" . $studyID . "' style='color:#FFFFFF'>Previous</a></td>
+	<td width='50%' align='right'><a href='" . $_SERVER['PHP_SELF'] . '?month='. $next_month . '&year=' . $next_year . "'&studyID='" . $studyID . "' style='color:#FFFFFF'>Next</a>  </td>
 	</tr>
 	</table>
 	</td>
@@ -86,12 +86,6 @@ function createBottomOfCalendar ($studyID) {
 	";
 	}
 }
-?>
-
-<?php
-$baseCalendar = new Calendar();
-$baseCalendar->createTopOfCalendar();
-$baseCalendar->createBottomOfCalendar();
 ?>
 
 </body>

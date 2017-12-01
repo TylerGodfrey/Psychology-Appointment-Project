@@ -93,13 +93,10 @@
 
 	function closeConnection () {
 		$this->conn->close();
-		echo "Connection closed successfully.";
 	}
 
 	function submit () {
-		echo $this->sql . "<br>";
 		if ($this->conn->query($this->sql) === TRUE) {
-		    echo "New record created successfully";
 		}
 		else {
 	    	echo "Error: " . $this->sql . "<br>" . $this->conn->error;
