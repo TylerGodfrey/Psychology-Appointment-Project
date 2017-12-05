@@ -4,10 +4,10 @@
  </head>
 <body>
 
-Year: <?php echo $_POST["year"]; ?>
-<br>Month: <?php echo $_POST["month"]; ?>
-<br>Day: <?php echo $_POST["day"]; ?>
-<br>Start Time: <?php echo $_POST["startTime"]; ?>
+Year: <?php echo $_POST["year"];?>
+<br>Month: <?php echo $_POST["month"];?>
+<br>Day: <?php echo $_POST["day"];?>
+<br>Start Time: <?php echo $_POST["startTime"];?>
 <!--<?php
 /*function processInfo()
 {
@@ -28,5 +28,6 @@ Year: <?php echo $_POST["year"]; ?>
 
 processInfo();*/
 ?> -->
+<br><a href="refactoring_calendar.php">Go Back</a>
 </body>
 </html>

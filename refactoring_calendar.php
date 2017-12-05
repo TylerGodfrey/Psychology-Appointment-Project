@@ -2,20 +2,19 @@
 <head>
 </head>
 <body>
+<div>
+<?php include 'links.php';?>
 
 <?php
+echo "<form action='/availability.php' method='post' name='proctorTime'>";
+
 $monthNames = Array("January", "February", "March", "April", "May", "June",  "July", "August", "September", "October", "November", "December");
 $bgcolor = "#999999";
-$color = "#FFFFFF";
-?>
+$color = "color:#FFFFFF";
 
-<?php
 if (!isset($_REQUEST["month"])) $_REQUEST["month"] = date("n");// Requesting the current month
 if (!isset($_REQUEST["year"])) $_REQUEST["year"] = date("Y");// Requesting the current year
-?>
 
-<?php
-echo "<form action='/availability.php' method='post'>";
 $cMonth = $_REQUEST["month"];// Current month
 $cYear = $_REQUEST["year"];// Current year
  
@@ -32,37 +31,27 @@ if ($next_month == 13 ) {
     $next_month = 1;
     $next_year = $cYear + 1;
 }
-?>
 
-<table width="1200">
-<tr align="center">
-<td bgcolor="#999999" style="color:#FFFFFF">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="50%" align="left">  <a href="<?php echo $_SERVER["PHP_SELF"] . "?month=". $prev_month . "&year=" . $prev_year; ?>" style="color:#FFFFFF">Previous</a></td> <!-- to go to the previous month -->
-<td width="50%" align="right"><a href="<?php echo $_SERVER["PHP_SELF"] . "?month=". $next_month . "&year=" . $next_year; ?>" style="color:#FFFFFF">Next</a>  </td> <!-- To go to the next month -->
-</tr>
-</table>
-</td>
-</tr>
-<tr>
-<td align="center">
-<table width="100%" border="2" cellpadding="2" cellspacing="2">
-<tr align="center">
-<td colspan="7" bgcolor="#999999" style="color:#FFFFFF"><strong><?php echo $monthNames[$cMonth-1].' '.$cYear; ?></strong></td>
-</tr>
+echo "<table width='1200'>" . "<tr align='center'>" .
+"<td bgcolor='" . $bgcolor . "' style='" . $color . "'>" .
+"<table width='100%'' border='0' cellspacing='0' cellpadding='0'>" . "<tr>" .
+"<td width='50%' align='left'>" . "<a href=" . $_SERVER["PHP_SELF"] . "?month=" . $prev_month . "&year=" . $prev_year . "style='" . $color . "'>Previous</a></td>" . //to go to the previous month
+"<td width='50%'' align='right'><a href=" . $_SERVER["PHP_SELF"] . "?month=". $next_month . "&year=" . $next_year . "style='" . $color . "'>Next</a></td>" .   //To go to the next month
+"</tr></table></td></tr>" .
+"<tr><td align='center'>
+<table width='100%' border='2' cellpadding='2' cellspacing='2'>" .
+"<tr align='center'>
+<td colspan='7' bgcolor='" . $bgcolor . "' style='" . $color . "'><strong>" . $monthNames[$cMonth-1] . ' ' . $cYear . "</strong></td></tr>" .
 
-<tr> 
-<?php // Looped through the days of the week instead of using multiple <td> tags
+"<tr>";
+// Looped through the days of the week instead of using multiple <td> tags
 $dayNames = Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
 for($i = 0; $i < count($dayNames); $i++)
 {
-    echo "<td align='center' bgcolor='#999999' style='color:#FFFFFF'><strong>" . $dayNames[$i] . "</strong></td>";
+    echo "<td align='center' bgcolor='" . $bgcolor ."' style='" . $color . "'><strong>" . $dayNames[$i] . "</strong></td>";
 }
-?>
-</tr>
+echo "</tr>";
 
-<?php 
 $timestamp = mktime(0,0,0,$cMonth,1,$cYear);
 $maxday = date("t",$timestamp);
 $thismonth = getdate ($timestamp);
@@ -71,9 +60,10 @@ $emptyDays = 0;
 $currentDay = 0;
 // Next four variables are arrays to loop through time oprions in <select> tags
 $startTimes = Array("5:00", "5:30", "6:00", "6:30", "7:00");
-$startTimesValues = Array("five", "five-thirty", "six", "six-thirty", "seven");
+//$startTimesValues = Array("five", "five-thirty", "six", "six-thirty", "seven");
+$timesValues = Array("1", "2", "3", "4", "5");
 $endTimes = Array("5:30", "6:00", "6:30", "7:00", "7:30");
-$endTimesValues = Array("five-thirty", "six", "six-thirty", "seven", "seven-thirty");
+//$endTimesValues = Array("five-thirty", "six", "six-thirty", "seven", "seven-thirty");
 
 for ($i = 0; $i < ($maxday + $startday); $i++) 
 {
@@ -91,25 +81,24 @@ for ($i = 0; $i < ($maxday + $startday); $i++)
 
     	echo "<td align='left' valign='top' height='110px'>". $currentDay . "<br>" . "<input type='hidden' name='day' value='" . $currentDay . "'>";
 
-        echo "<form action='/availability.php' method='post'>" .
-        "Start:<select name='startTime'" .
+        echo "Start:<select onchange='document.getElementById('proctorTime').submit();' name='startTime'>" .
         "<option></option>" .
         "<option value='blank' style='display:none'></option>";
 
         for ($f = 0; $f < count($startTimes); $f++)
         {
-            echo "<option value='" . $startTimesValues[$f] . "'><time>" . $startTimes[$f] . "</time></option>";
+            echo "<option value='" . $timesValues[$f] . "'"; if($startTime==$f){echo 'selected';} echo "><time>" . $startTimes[$f] . "</time></option>";
         }
 
         echo "</select>";
 
-        echo "<br>End: <select name='endTime'" .
+        echo "<br>End: <select name='endTime'>" .
         "<option></option>" .
         "<option value='blank' style='display:none'></option>";
 
         for ($f = 0; $f < count($endTimes); $f++)
         {
-            echo "<option value='" . $endTimesValues[$f] . "'><time>" . $endTimes[$f] . "</time></option>";
+            echo "<option value='" . $timesValues[$f] . "'><time>" . $endTimes[$f] . "</time></option>";
         }
 
         echo "</select>";
