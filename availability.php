@@ -4,10 +4,15 @@
  </head>
 <body>
 
-Year: <?php echo $_POST["year"];?>
-<br>Month: <?php echo $_POST["month"];?>
-<br>Day: <?php echo $_POST["day"];?>
-<br>Start Time: <?php echo $_POST["startTime"];?>
+<?php
+	echo "Year: " . $_POST["year"] .
+	"<br>Month: " . $_POST["month"] .
+	"<br>Day: " . $_POST["day"];
+	if (empty($_POST["startTime"])) echo "<br>No start time was given!"; 
+	else echo "<br>Start Time: " . $_POST["startTime"];
+	if (empty($_POST["endTime"])) echo "<br>No end time was given!";
+	else echo "<br>End Time: " . $_POST['endTime'];
+?>
 <!--<?php
 /*function processInfo()
 {
