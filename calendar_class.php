@@ -36,8 +36,8 @@ function createTopOfCalendar ($studyID) {
 	<td bgcolor='#999999' style='color:#FFFFFF'>
 	<table width='100%' border='0' cellspacing='0' cellpadding='0'>
 	<tr>
-	<td width='50%' align='left'>  <a href='" . $_SERVER['PHP_SELF'] . '?month='. $prev_month . '&year=' . $prev_year . "'&studyID='" . $studyID . "' style='color:#FFFFFF'>Previous</a></td>
-	<td width='50%' align='right'><a href='" . $_SERVER['PHP_SELF'] . '?month='. $next_month . '&year=' . $next_year . "'&studyID='" . $studyID . "' style='color:#FFFFFF'>Next</a>  </td>
+	<td width='50%' align='left'>  <a href='" . $_SERVER['PHP_SELF'] . '?StudyID='. $studyID . '&month=' . $prev_month . '&year=' . $prev_year . "' style='color:#FFFFFF'>Previous</a></td>
+	<td width='50%' align='right'><a href='" . $_SERVER['PHP_SELF'] . '?StudyID='. $studyID . '&month=' . $next_month . '&year=' . $next_year . "' style='color:#FFFFFF'>Next</a>  </td>
 	</tr>
 	</table>
 	</td>

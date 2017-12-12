@@ -29,7 +29,7 @@ function checkValues() {
 	else {
 		multiTest = 0;
 	}
-	if ($('lab2').prop('checked')) {
+	if ($('#lab2').prop('checked')) {
 		lab2 = 1;
 		roomIDs += '2|';
 	}

@@ -35,21 +35,37 @@ class AppCalendar extends Calendar {
 		$maxday = date("t",$timestamp);
 		$thismonth = getdate ($timestamp);
 		$startday = $thismonth['wday'];
+		$timeFormat = "H:i";
+
+		$roomNumbers = array();
+		$roomNumberFetcher = new Connection();
+		$roomNumberFetcher->sql = "SELECT RoomID FROM `cs 375`.`study lab pairings` WHERE StudyID = $studyID";
+		$roomNumberFetcher->createConnection();
+		$roomNumbersResult = mysqli_query($roomNumberFetcher->conn, $roomNumberFetcher->sql);
+		if (mysqli_num_rows($roomNumbersResult) > 0) {
+			while ($row = mysqli_fetch_assoc($roomNumbersResult)) {
+				array_push($roomNumbers, $row['RoomID']);
+			}
+		}
+		$roomNumberFetcher->closeConnection();
+
+		$experimentDuration = "";
+		$getExperimentDuration = new Connection();
+    	$getExperimentDuration->sql = "SELECT ExpectedTimeInMinutes FROM `study` WHERE StudyID = $studyID"; // creates query to get expected time of experiment for study in question
+    	$getExperimentDuration->createConnection();
+    	$getExperimentDuration = mysqli_query($getExperimentDuration->conn, $getExperimentDuration->sql); // runs the query on the database
+    	if (mysqli_num_rows($getExperimentDuration) > 0) {
+    		while ($row = mysqli_fetch_assoc($getExperimentDuration)) { // since the query should only return one row, this will only run once
+    			$experimentDuration = $row['ExpectedTimeInMinutes']; // sets variable to the time the experiment is expected to take
+    		}
+    	}
+
 		for ($i=0; $i<($maxday+$startday); $i++) {
 		    if(($i % 7) == 0 ) echo "<tr>";
 		    if($i < $startday) echo "<td></td>";
 		    else {
 		    	$dateObject = date_create(strval($this->cYear) . '-' . strval($thismonth['mon']) . '-' . strval($i - $startday + 1));
 		    	$date = date_format($dateObject, 'Y-m-d');
-		    	$getExperimentDuration = new Connection();
-		    	$getExperimentDuration->sql = "SELECT ExpectedTimeInMinutes FROM `study` WHERE StudyID = $studyID"; // creates query to get expected time of experiment for study in question
-		    	$getExperimentDuration->createConnection();
-		    	$getExperimentDuration = mysqli_query($getExperimentDuration->conn, $getExperimentDuration->sql); // runs the query on the database
-		    	if (mysqli_num_rows($getExperimentDuration) > 0) {
-		    		while ($row = mysqli_fetch_assoc($getExperimentDuration)) { // since the query should only return one row, this will only run once
-		    			$experimentDuration = $row['ExpectedTimeInMinutes']; // sets variable to the time the experiment is expected to take
-		    		}
-		    	}
 
 		    	$availabilitiesConnection = new Connection();  // creates Connection object for getting the available times
 		    	$availabilitiesConnection->sql = "SELECT * FROM `experimenter availability` WHERE StudyID = $studyID AND Date = '$date'"; // gets experimenter availabilities for that study and date
@@ -66,7 +82,12 @@ class AppCalendar extends Calendar {
 		    	}
 		    	$availabilitiesConnection->closeConnection();
 
-		    	$roomTimes = array();
+
+		    	// MODIFYING CALENDAR SO THAT THE ROOM NUMBERS ARE PUT TOGETHER WITH THE TIME SLOTS, NEED TO RE-DO HOW ROOM TIMES ARE CHECKED
+
+
+
+		    	/*$roomTimes = array();
 		    	$rooms = new Connection();
 		    	$rooms->sql = "SELECT Room.RoomID, App.StartTime, App.EndTime
 		    					FROM `cs 375`.`appointments` AS App 
@@ -80,11 +101,11 @@ class AppCalendar extends Calendar {
 						while ($row = mysqli_fetch_assoc($roomsResult)) {
 							$startTime = date_create($row['StartTime']);
 							$endTime = date_create($row['EndTime']);
-							array_push($roomTimes, array($startTime, $endTime));
+							array_push($roomTimes, array($startTime, $endTime, $row['RoomID']));
 						}
 					}
 				}
-				$rooms->closeConnection();
+				$rooms->closeConnection();*/
 
 		    	$experimenterTimeSlots = array(); // array of time slots that work for the experimenter
 		    	$roomTimeSlots = array(); // array of time slots after room availability is checked
@@ -93,7 +114,7 @@ class AppCalendar extends Calendar {
 		    	$getExistingAppointments->createConnection();
 		    	foreach($availabilityArray as $individualAvailability) {
 		    		$startOfTimeSlot = $individualAvailability[0];
-		    		$endOfTimeSlot = date_create(date_format($startOfTimeSlot, "H:i:s")); // set this way so that we can change the end time without changing the start time
+		    		$endOfTimeSlot = date_create(date_format($startOfTimeSlot, $timeFormat)); // set this way so that we can change the end time without changing the start time
 		    		$endOfTimeSlot->modify('+' . $experimentDuration . ' minutes');  // end of time slot is 30 minutes after start of time slot
 		    		$endOfAvailability = $individualAvailability[1];
 		    		$proctorID = $individualAvailability[2];
@@ -109,17 +130,17 @@ class AppCalendar extends Calendar {
 		    		
 		    		while ($endOfTimeSlot <= $endOfAvailability) {
 		    			$individualSlot = array($startOfTimeSlot, $endOfTimeSlot);
-    					$startTime = date_create(date_format($individualSlot[0], "H:i:s"));
-    					$endTime = date_create(date_format($individualSlot[1], "H:i:s"));
+    					$startTime = date_create(date_format($individualSlot[0], $timeFormat));
+    					$endTime = date_create(date_format($individualSlot[1], $timeFormat));
 		    			if (count($existingAppointments) > 0) {
 			    			foreach ($existingAppointments as $appointment) {
 			    				if (!$this->checkIfConflicting($individualSlot, $appointment)) {
-			    					array_push($experimenterTimeSlots, array($startTime, $endTime));
+			    					array_push($experimenterTimeSlots, array($startTime, $endTime, $proctorID));
 			    				}	
 			    			}
 		    			}
 		    			else {
-		    				array_push($experimenterTimeSlots, array($startTime, $endTime));
+		    				array_push($experimenterTimeSlots, array($startTime, $endTime, $proctorID));
 		    			}
 
 		    			$startOfTimeSlot->modify('+15 minutes');
@@ -127,17 +148,17 @@ class AppCalendar extends Calendar {
 		    		}
 
 		    		foreach($experimenterTimeSlots as $slot) {
-		    			$startTime = date_create(date_format($slot[0], "H:i:s"));
-			    		$endTime = date_create(date_format($slot[1], "H:i:s"));
+		    			$startTime = date_create(date_format($slot[0], $timeFormat));
+			    		$endTime = date_create(date_format($slot[1], $timeFormat));
 		    			if (count($roomTimes) > 0) {
 			    			foreach($roomTimes as $roomTime) {
 			    				if (!$this->checkIfConflicting($slot, $roomTime)) {
-			    					array_push($roomTimeSlots, array($startTime, $endTime));
+			    					array_push($roomTimeSlots, array($startTime, $endTime, $slot[2], $roomTime[2]));
 			    				}
 			    			}
 			    		}
 			    		else {
-			    			array_push($roomTimeSlots, array($startTime, $endTime));
+			    			array_push($roomTimeSlots, array($startTime, $endTime, $slot[2], ));
 			    		}
 		    		}
 		    	}
@@ -145,10 +166,14 @@ class AppCalendar extends Calendar {
 
 		    	foreach($roomTimeSlots as $slot) {
 		    		$equal = false;
+		    		//$proctorArray = array();
+		    		//$roomArray = array();
 		    		if (count($finalTimeSlots) > 0) {
 		    			foreach($finalTimeSlots as $final) {
 			    			if ($slot[0] == $final[0]) {
 			    				$equal = true;
+			    				//array_push($proctorArray, $slot[2]);
+			    				//array_push($roomArray, $slot[3]);
 			    				break;
 			    			}
 			    			else {
@@ -157,17 +182,45 @@ class AppCalendar extends Calendar {
 			    		}
 			    	}
 		    		if ($equal == false) {
-		    			array_push($finalTimeSlots, $slot);
+		    			array_push($finalTimeSlots, array($slot[0], $slot[1]));
 		    		}
-		    	}		    	
+		    	}
 
+		    	$timeSlotsWithPairings = array(); // time slots paired with the experimenters and rooms available at the time
 
-		    	echo "<td align='left' valign='top' width='100px' height='100px'>". ($i - $startday + 1) . "<br> <select name='timeSlots'> <option value=' '";
+		    	foreach($finalTimeSlots as $final) {
+		    		$proctorArray = array();
+		    		$roomArray = array();
+		    		foreach($roomTimeSlots as $room) {
+		    			if ($final[0] == $room[0]) {
+		    				array_push($proctorArray, $room[2]);
+		    				array_push($roomArray, $room[3]);
+		    			}
+		    		}
+		    		array_push($timeSlotsWithPairings, array($final[0], $final[1], $proctorArray, $roomArray));
+		    	}
+
+		    	$day = $i - $startday + 1;
+		    	$dateInsert = "<td align='left' valign='top' width='100px' height='100px'>" . ($day) . "<br>";
+		    	if (count($finalTimeSlots) > 0) {
+		    		$dateInsert = $dateInsert . "<select id='day" . $day . "'> <option value=''></option>";
+		    		foreach ($finalTimeSlots as $slot) {
+		    			$string = date_format($slot[0], $timeFormat) . "-" . date_format($slot[1], $timeFormat);
+		    			$dateInsert = $dateInsert . "<option value'" . $string . "'>" . $string . "</option>";
+		    		}
+		    		$dateInsert = $dateInsert . "</select><br><button type='button' class='btn btn-primary' style='float: right' onclick='goToAppointCreate(". "$studyID" . ", \"" . $date . "\")'>Submit</button>";
+		    	}
+		    	else {
+		    		$dateInsert = $dateInsert . "No times available.";
+		    	}
+		    	$dateInsert = $dateInsert . "</td>";
+		    	echo $dateInsert;
+		    	/*echo "<td align='left' valign='top' width='100px' height='100px'>". ($i - $startday + 1) . "<br> <select name='timeSlots'> <option value=''></option>";
 		    	foreach ($finalTimeSlots as $slot) {
-		    		$string = date_format($slot[0], "H:i:s") . "-" . date_format($slot[1], "H:i:s");
+		    		$string = date_format($slot[0], $timeFormat) . "-" . date_format($slot[1], $timeFormat);
 		    	 	echo "<option value='" . $string . "'>" . $string . "</option>";
 		    	}
-		    	echo "</select></td>";
+		    	echo "</select></td>";*/
 		    }
 		    if(($i % 7) == 6 ) echo "</tr>";
 		}
@@ -235,6 +288,6 @@ if (mysqli_num_rows($result) > 0) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+<script type="text/javascript" src="js/appointment_date_selection.js"></script>
 </body>
 </html>
