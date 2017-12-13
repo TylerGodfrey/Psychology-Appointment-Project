@@ -9,11 +9,11 @@ private $monthNames = Array("January", "February", "March", "April", "May", "Jun
 "August", "September", "October", "November", "December");
 
 function createTopOfCalendar ($studyID) {
-	if (!isset($_REQUEST["month"])) $_REQUEST["month"] = date("n");
-	if (!isset($_REQUEST["year"])) $_REQUEST["year"] = date("Y");
+	if (!isset($_POST["month"])) $_POST["month"] = date("n");
+	if (!isset($_POST["year"])) $_POST["year"] = date("Y");
 
-	$this->cMonth = $_REQUEST["month"];
-	$this->cYear = $_REQUEST["year"];
+	$this->cMonth = $_POST["month"];
+	$this->cYear = $_POST["year"];
 	 
 	$prev_year = $this->cYear;
 	$next_year = $this->cYear;
@@ -36,8 +36,21 @@ function createTopOfCalendar ($studyID) {
 	<td bgcolor='#999999' style='color:#FFFFFF'>
 	<table width='100%' border='0' cellspacing='0' cellpadding='0'>
 	<tr>
-	<td width='50%' align='left'>  <a href='" . $_SERVER['PHP_SELF'] . '?StudyID='. $studyID . '&month=' . $prev_month . '&year=' . $prev_year . "' style='color:#FFFFFF'>Previous</a></td>
-	<td width='50%' align='right'><a href='" . $_SERVER['PHP_SELF'] . '?StudyID='. $studyID . '&month=' . $next_month . '&year=' . $next_year . "' style='color:#FFFFFF'>Next</a>  </td>
+	
+	<td width='50%' align='left'> <form action='" . $_SERVER['PHP_SELF'] . "' method='post'>
+		<input type='hidden' name='month' value='" . $prev_month . "'>
+		<input type='hidden' name='year' value='" . $prev_year . "'>
+		<input type='hidden' name='studyID' value='" . $studyID . "'>
+		<input type='submit' value='Prev'></input>
+		</form> </td>
+
+	<td width='50%' align='right'> <form action='" . $_SERVER['PHP_SELF'] . "' method='post'>
+		<input type='hidden' name='month' value='" . $next_month . "'>
+		<input type='hidden' name='year' value='" . $next_year . "'>
+		<input type='hidden' name='studyID' value='" . $studyID . "'>
+		<input type='submit' value='Next'></input>
+		</form> </td>	
+
 	</tr>
 	</table>
 	</td>

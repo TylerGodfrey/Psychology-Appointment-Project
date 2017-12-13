@@ -43,15 +43,18 @@ if ($study_number > 0) {
         }
         
         echo "
-        <form>
         <table border=\"2\">
         <col width=\"200\">
         <col width=\"200\">
 
         <tr>
-            <td>" . 
+            <td colspan='2'>" . 
             $row['StudyName'] .
-            "<button type='button' class='btn btn-primary' style='float: right' onclick='goToPage({$row['StudyID']})'>Select</button></td> 
+            "<form action='appointment_date_selection.php' method='POST'>
+            <input type='hidden' name='studyID' value=" . $row['StudyID'] . ">
+            <input type='hidden' name='year' value=" . date_format(date_create(), 'Y') . ">
+            <input type='hidden' name='month' value=" . date_format(date_create(), 'm') . "><input type='submit' value='Make An Appointment'></input></form>
+            </td> 
         </tr>
         <tr>
             <td colspan=\"2\">" .
@@ -73,8 +76,7 @@ if ($study_number > 0) {
             "
             </td>
         </tr>
-        </table>
-</form>";
+        </table>";
 
     }
 } else {
@@ -90,7 +92,6 @@ $gather->closeConnection();
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/study_select_for_appointment.js"></script>
-
 
 </body>
 </html>
