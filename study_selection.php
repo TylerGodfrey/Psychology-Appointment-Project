@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 </head>
 <body>
-
+<a href="study_selection.php">Back To Study Selection</a>
 <?php
 
 include ("general_connection.php");

@@ -16,6 +16,9 @@
 </style>
 </head>
 <body>
+<a href="example_study_creation.php">Create New Study</a>
+<br><a href="refactoring_calendar.php">Proctor Availability Sign-up</a>
+<br><a href="experiment_verification.php">Experiment Verification</a>
 <?php
 
 include ("general_connection.php");

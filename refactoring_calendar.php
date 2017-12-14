@@ -3,11 +3,7 @@
 </head>
 <body>
 <div>
-<?php include 'links.php';?>
-
 <?php
-echo "<form action='availability.php' method='post' name='proctorTime'>";
-
 $monthNames = Array("January", "February", "March", "April", "May", "June",  "July", "August", "September", "October", "November", "December");
 $bgcolor = "#999999";
 $color = "color:#FFFFFF";
@@ -76,15 +72,15 @@ for ($i = 0; $i < ($maxday + $startday); $i++)
     {
         $currentDay++;
 
-    	echo "<td align='left' valign='top' height='110px'>". $currentDay . "<br>" . "<input type='hidden' name='day' value='" . $currentDay . "'>";
+    	echo "<td align='left' valign='top' height='110px'>". $currentDay . "<br>" . "<form action='availability.php' method='post' name='proctorTime'>" . "<input type='hidden' name='day' value='" . $currentDay . "'>";
 
-        echo "Start:<select name='startTime'" .
-        "<option></option>";
+        echo "Start:<select name='startTime" . $currentDay .
+        "'<option></option>";
 
         for ($f = 0; $f < count($startTimes); $f++)
         {
             echo "<option value='" . $startTimes[$f] . "'"; if($startTimes[$f] == '') echo " style='display:none'"; echo "><time>" . $startTimes[$f] . "</time></option>";
-        }
+        } //time will end at the last day, in this case
 
         echo "</select>";
 
@@ -93,19 +89,22 @@ for ($i = 0; $i < ($maxday + $startday); $i++)
 
         for ($f = 0; $f < count($endTimes); $f++)
         {
-            echo "<option value='" . $endTimes[$f] . "'"; if($endTimes[$f] == '') echo " style='display:none'"; echo "><time>" . $endTimes[$f] . "</time></option>";
+            if(empty($endTimes[$f]))   
+                echo "<option value='default' style='display:none'></option>";
+            else 
+                echo "<option value='" . $endTimes[$f] . "'><time>" . $endTimes[$f] . "</time></option>";
         }
 
         echo "</select>";
 
-        $day = $currentDay - $emptyDays;
+        //$day = $currentDay - $emptyDays;
 
-        echo "<br><input type='submit' value='Submit'>" . "</td>" .
-        "<input type='hidden' name='year' value='" . $cYear . "'>" .
-        "<input type='hidden' name='month' value='" . $monthNames[$cMonth - 1] . "'>";
+        echo "<input type='hidden' name='year' value='" . $cYear . "'>" .
+        "<input type='hidden' name='month' value='" . $monthNames[$cMonth - 1] . "'>"
+        . "<br><input type='submit' value='Submit'>" . "</form></td>" ;
     }
 
-    if(($i % 7) == 6 ) echo "</tr>" . "</form>";
+    if(($i % 7) == 6 ) echo "</tr>";
 }
 ?>
 

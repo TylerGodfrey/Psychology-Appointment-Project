@@ -5,13 +5,19 @@
 <body>
 
 <?php
-	echo "Year: " . $_POST["year"] .
-	"<br>Month: " . $_POST["month"] .
-	"<br>Day: " . $_POST["day"];
-	if (empty($_POST["startTime"])) echo "<br>No start time was given!"; 
-	else echo "<br>Start Time: " . $_POST["startTime"];
-	if (empty($_POST["endTime"])) echo "<br>No end time was given!";
-	else echo "<br>End Time: " . $_POST['endTime'];
+	$year = $_POST['year'];
+	$month = $_POST['month'];
+	$day = $_POST['day'];
+	$startTime = $_POST["startTime" . $day];
+	$_endTime = $_POST['endTime'];
+
+	echo "Year: " . $year .
+	"<br>Month: " . $month .
+	"<br>Day: " . $day;
+	if (empty($startTime)) echo "<br>No start time was given!"; 
+	else echo "<br>Start Time: " . $endTime;
+	if (empty($endTime)) echo "<br>No end time was given!";
+	else echo "<br>End Time: " . $endTime;
 ?>
 <!--<?php
 /*function processInfo()
@@ -34,5 +40,6 @@
 processInfo();*/
 ?> -->
 <br><a href="refactoring_calendar.php">Go Back</a>
+<br><a href="experiment_verification.php">Verify Appointments</a>
 </body>
 </html>
