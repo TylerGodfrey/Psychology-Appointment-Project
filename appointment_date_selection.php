@@ -12,8 +12,9 @@
 
 <?php
 
-include ("general_connection.php");
-include ("calendar_class.php");
+include ('links.php');
+include ('general_connection.php');
+include ('calendar_class.php');
 
 class AppCalendar extends Calendar {
 
@@ -31,7 +32,9 @@ class AppCalendar extends Calendar {
 		$maxday = date("t",$timestamp);
 		$thismonth = getdate ($timestamp);
 		$startday = $thismonth['wday'];
-		$timeFormat = "H:i";
+		$internalTime = "H:i";
+		$printTime = "h:i A";
+
 
 		$roomNumbers = array();
 		$roomNumberFetcher = new Connection();
@@ -86,7 +89,7 @@ class AppCalendar extends Calendar {
 		    	$getExistingAppointments->createConnection();
 		    	foreach($availabilityArray as $individualAvailability) {
 		    		$startOfTimeSlot = $individualAvailability[0];
-		    		$endOfTimeSlot = date_create(date_format($startOfTimeSlot, $timeFormat)); // set this way so that we can change the end time without changing the start time
+		    		$endOfTimeSlot = date_create(date_format($startOfTimeSlot, $internalTime)); // set this way so that we can change the end time without changing the start time
 		    		$endOfTimeSlot->modify('+' . $experimentDuration . ' minutes');  // end of time slot is 30 minutes after start of time slot
 		    		$endOfAvailability = $individualAvailability[1];
 		    		$proctorID = $individualAvailability[2];
@@ -102,10 +105,10 @@ class AppCalendar extends Calendar {
 		    		
 		    		while ($endOfTimeSlot <= $endOfAvailability) {
 		    			$individualSlot = array($startOfTimeSlot, $endOfTimeSlot);
-    					$startTime = date_create(date_format($individualSlot[0], $timeFormat));
-    					$endTime = date_create(date_format($individualSlot[1], $timeFormat));
+    					$startTime = date_create(date_format($individualSlot[0], $internalTime));
+    					$endTime = date_create(date_format($individualSlot[1], $internalTime));
 		    			if (count($existingAppointments) > 0) {
-		    				echo "The day is $day and there are " . count($existingAppointments) . " appointments today.<br>";
+		    				// echo "The day is $day and there are " . count($existingAppointments) . " appointments today.<br>";
 			    			foreach ($existingAppointments as $appointment) {
 			    				if (!$this->checkIfConflicting($individualSlot, $appointment)) {
 			    					array_push($experimenterTimeSlots, array($startTime, $endTime, $proctorID));
@@ -131,9 +134,9 @@ class AppCalendar extends Calendar {
 	    			}
 	    		}
 
-	    		foreach ($filteredExperimenterTimeSlots as $filtered) {
+	    		/*foreach ($filteredExperimenterTimeSlots as $filtered) {
 	    			echo "Day " . $day . ": This time slot goes from " . date_format($filtered[0], "H:i") . " to " . date_format($filtered[1], "H:i") . " and is proctored by " . $filtered[2] . "<br>";
-	    		}
+	    		}*/
 
 	    		foreach($roomNumbers as $room) {
 	    			$roomTimes=array();
@@ -156,8 +159,8 @@ class AppCalendar extends Calendar {
 
 
 	    			foreach($filteredExperimenterTimeSlots as $slot) {
-		    			$startTime = date_create(date_format($slot[0], $timeFormat));
-			    		$endTime = date_create(date_format($slot[1], $timeFormat));
+		    			$startTime = date_create(date_format($slot[0], $internalTime));
+			    		$endTime = date_create(date_format($slot[1], $internalTime));
 		    			if (count($roomTimes) > 0) {
 			    			foreach($roomTimes as $roomTime) {
 			    				if (!$this->checkIfConflicting($slot, $roomTime)) {
@@ -215,8 +218,8 @@ class AppCalendar extends Calendar {
 		    		echo "<form action='appointment_creation_final.php' method='post'>";
 		    		$dateInsert = $dateInsert . "<select name='timeSlotInfo'> <option value=''></option>";
 		    		foreach ($timeSlotsWithPairings as $slot) {
-		    			$string = date_format($slot[0], $timeFormat) . "-" . date_format($slot[1], $timeFormat);
-		    			$value = $string . "|";
+		    			$string = date_format($slot[0], $printTime) . "-" . date_format($slot[1], $printTime);
+		    			$value = date_format($slot[0], $internalTime) . "-" . date_format($slot[1], $internalTime) . "|";
 		    			foreach (array_unique($slot[2]) as $proctor) {
 		    				$value = $value . $proctor . ",";
 		    			}
@@ -228,7 +231,7 @@ class AppCalendar extends Calendar {
 		    			}
 		    			$value = substr($value,0,-1);
 
-		    			$dateInsert = $dateInsert . "<option value='" . $value . "'>" . $value . "</option>";
+		    			$dateInsert = $dateInsert . "<option value='" . $value . "'>" . $string . "</option>";
 		    		}
 		    		$dateInsert = $dateInsert . "</select><br>
 		    		<input type='hidden' name='studyID' value='". $studyID . "'>

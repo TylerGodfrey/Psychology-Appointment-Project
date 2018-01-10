@@ -12,6 +12,7 @@
 
 <?php
 
+include ('links.php');
 include ('general_connection.php');
 
 if(isset($_POST['studyID'])) {
@@ -77,8 +78,15 @@ $appointmentConnection->submit();
 $appointmentConnection->closeConnection();
 
 echo "<script>alert('Your appointment has been made!  You will receive a notification by your preferred method.')</script>";
+
+echo "<form id='sendToStudySelection' action='study_selection.php' method='post'></form>";
+
+echo "<script type='text/javascript'>
+	document.getElementById('sendToStudySelection').submit();
+	</script>";
+/*
 header("Location: study_selection.php");
-die();
+die();*/
 ?>
 
 

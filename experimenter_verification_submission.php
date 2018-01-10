@@ -13,6 +13,7 @@
 <body>
 <?php
 
+include ('links.php');
 include ('general_connection.php');
 
 $studyID = $_GET['StudyID'];
@@ -36,10 +37,14 @@ else if ($showStatus == 'false') {
 $verificationConnection->submit();
 $verificationConnection->closeConnection();
 
-echo '<script type="text/javascript">
-			alert("You have successfully verified the subject\'s participation in the experiment.")
-           window.location.href = "experiment_verification.php"
-      </script>';
+echo "<form id='sendToExperimentVerification' action='experiment_verification.php' method='post'>
+      <input type='hidden' name='studyID' value='$studyID'>
+      </form>";
+
+echo "<script type='text/javascript'>
+      document.getElementById('sendToExperimentVerification');
+			alert('You have successfully verified the subject\'s participation in the experiment.');
+      </script>";
 ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

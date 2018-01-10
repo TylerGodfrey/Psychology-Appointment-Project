@@ -2,6 +2,9 @@
 <head>
 </head>
 <body>
+	<?php
+	include ('links.php');
+	?>
 <center>Study Creation</center>
 <form>
 Study Name:<br>
@@ -12,7 +15,7 @@ Study Description:<br>
 <input type="text" id="description"><br><br>
 
 <?php 
-include ("general_connection.php");
+include ('general_connection.php');
 $classesQuery = new Connection();
 $classesQuery->createConnection();
 $classesQuery->sql = "SELECT * FROM `classes`";

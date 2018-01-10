@@ -3,7 +3,6 @@
   <title>PHP Test</title>
  </head>
  <body>
- <a href="study_selection.php">Back To Study Selection</a>
  <?php
 
 
@@ -29,6 +28,11 @@ $studySub->getBridge();
 $studySub->submitBridge();
 $studySub->closeConnection();
 
+echo "<form id='sendToStudySelection' action='study_selection.php' method='post'></form>";
+echo "<script type='text/javascript'>
+        document.getElementById('sendToStudySelection').submit();
+        alert('Your study has been created.  Returning you to the study selection screen.');
+        </script>";
 
 /*	function isDate($value) {// https://stackoverflow.com/questions/11029769/function-to-check-if-a-string-is-a-date
 

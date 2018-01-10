@@ -12,6 +12,7 @@
 
 <?php
 
+include ('links.php');
 include ('general_connection.php');
 
 $studyID = $_POST['studyID'];
@@ -31,11 +32,8 @@ $selectedProctor = $proctorIDs[$proctorSelector]; // gets the appropriate procto
 
 $roomArray = preg_split('/,/', $timeSlotInfoArray[2], -1, PREG_SPLIT_NO_EMPTY);
 $roomIDs = array_unique($roomArray);
-foreach($roomIDs as $room) {
-	echo "Room number " . $room . " is available.<br>";
-}
+
 $roomSelector = mt_rand(0, count($roomIDs) - 1);
-echo "Array location " . $roomSelector . " selected.";
 $selectedRoom = $roomIDs[$roomSelector];
 
 
@@ -100,7 +98,7 @@ echo "<form id='submit-form' align='center' action='appointment_creation_submit.
 	Expected Duration: " . $studyInfo['ExpectedTimeInMinutes'] . " minutes <br>
 	Date Selected: " . $printDate . "<br>
 	<input type='hidden' name='date' value='" . $submitDate . "'>
-	Time Slot Selected: " . $timeSlot[0] . "-" . $timeSlot[1] . "<br>
+	Time Slot Selected: " . date_format(date_create($timeSlot[0]), 'h:i A') . "-" . date_format(date_create($timeSlot[1]), 'h:i A') . "<br>
 	<input type='hidden' name='startTime' value='" . $timeSlot[0] . "'>
 	<input type='hidden' name='endTime' value='" . $timeSlot[1] . "'> <br>
 	First Name: <input type='text' name='firstName'> <br>

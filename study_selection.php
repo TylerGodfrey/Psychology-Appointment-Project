@@ -9,10 +9,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 </head>
 <body>
-<a href="study_selection.php">Back To Study Selection</a>
+
 <?php
 
-include ("general_connection.php");
+include ('links.php');
+include ('general_connection.php');
 
 $gather = new Connection();
 
@@ -53,7 +54,22 @@ if ($study_number > 0) {
             "<form action='appointment_date_selection.php' method='POST'>
             <input type='hidden' name='studyID' value=" . $row['StudyID'] . ">
             <input type='hidden' name='year' value=" . date_format(date_create(), 'Y') . ">
-            <input type='hidden' name='month' value=" . date_format(date_create(), 'm') . "><input type='submit' value='Make An Appointment'></input></form>
+            <input type='hidden' name='month' value=" . date_format(date_create(), 'm') . ">
+            <input type='submit' value='Make An Appointment'>
+            </form>
+
+            <form action='proctor_login.php' method='POST'>
+            <input type='hidden' name='studyID' value=" . $row['StudyID'] . ">
+            <input type='hidden' name='destination' value='refactoring_calendar.php'>
+            <input type='submit' value='Set Availabilities'>
+            </form>
+
+            <form action='proctor_login.php' method='POST'>
+            <input type='hidden' name='studyID' value=" . $row['StudyID'] . ">
+            <input type='hidden' name='destination' value='experiment_verification.php'>
+            <input type='submit' value='Verify Attendance'>
+            </form>
+            
             </td> 
         </tr>
         <tr>
